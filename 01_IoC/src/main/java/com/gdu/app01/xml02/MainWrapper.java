@@ -18,7 +18,6 @@ public class MainWrapper {
     // 확인
     System.out.println(user.getUserNo() + ", " + user.getUserId());
     System.out.println(board.getTitle() + board.getEditor());
-
     // app-context.xml
     ctx.close();
   }

@@ -41,7 +41,7 @@ public class MainWrapper {
      man.getCalculator().add(1, 2);
      System.out.println(woman.getName() + "," + woman.getAge());
      woman.getCalculator().add(3, 4);
-     
+     System.out.println(man.getCalculator());
      
      // app-context.xml 파일 닫기
      ctx.close();

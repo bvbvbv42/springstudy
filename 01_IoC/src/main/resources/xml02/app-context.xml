@@ -14,7 +14,7 @@
   <bean class="com.gdu.app01.xml02.User" id="user" p:userNo="1" p:userId="admin"/>
  
   <!--  
-    Board board = new Boar();
+    Board board = new Board();
     board.setTitle("공지사항");
     board.setEditor(user);
   -->

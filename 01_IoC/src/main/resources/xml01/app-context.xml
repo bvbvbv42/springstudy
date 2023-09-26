@@ -5,8 +5,8 @@
   
   
   <!-- Calculator calc = new Calculator(); -->
-  <bean class="com.gdu.app01.xml01.Calculator" id="calc" scope="singleton"/>
-
+   <bean class="com.gdu.app01.xml01.Calculator" id="calc" scope="singleton"/>
+ 
 
   <!--
     1. 디폴트 생성자 + setter
