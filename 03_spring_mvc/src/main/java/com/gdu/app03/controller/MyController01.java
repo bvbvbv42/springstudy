@@ -35,7 +35,7 @@ public class MyController01 {
     return "index";  //        /WEB-INF/views/index.jsp
   }
   
-  @RequestMapping(value="/board/list.do", method=RequestMethod.GET)
+  @RequestMapping(value="/board/list.do", method=RequestMethod.GET)   // 인터넷: value 요청받을 주소를 입력
   public String boardList() {
     // ViewResolver의 prefix : /WEB-INF/views/
     // ViewResolver의 suffix : .jsp

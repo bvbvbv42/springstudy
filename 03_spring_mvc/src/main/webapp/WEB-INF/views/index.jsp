@@ -31,6 +31,5 @@
   <div>
     <a href="${contextPath}/article/add.do?title=이럴수가">기사 등록하기</a>
   </div>
-  ${sessionScope.title} 
  </body>
 </html>

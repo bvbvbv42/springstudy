@@ -9,13 +9,24 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-  ${title}
+  <%-- model에 저장된 title --%>
+  ${requestScope.title}
   <br>
+  <%-- session에 저장된 title --%>
   ${sessionScope.title}  <!-- session에 저장된 title, model은 안붙임 -->
   <br>
   
   <a href="${contextPath}/article/main.do">세션 초기화하고 main 화면으로 가기</a>
+  
+  <br>
+  
+  <a href="${contextPath}/article/confirm.do">세션 확인하기</a>  
+  
+  
+  
+  
+  
+  
   
 </body>
 </html>
