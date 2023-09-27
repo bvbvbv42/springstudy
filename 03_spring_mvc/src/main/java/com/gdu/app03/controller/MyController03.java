@@ -56,8 +56,9 @@ public class MyController03 {
    *  1) 요청 파라미터를 필드로 가지고 있는 객체를 커맨드 객체라고 한다.
    *  2) 요청 파라미터를 필드에 저장할 때 Setter가 사용된다.
    *  3) 요청 파라미터가 많은 경우에 유용하다.
-   *  4) 커맨드 객체는 자동으로 Model에 저장된다. 저장될 때 객체명(dto)이 아닌 클래스명(BlogDto)으로 저장된다.(클래스명을 (첫글자를 소문자로)LowerCamelCases로 바꿔서 저장한다.)
+   *  4) (덜 중요) 커맨드 객체는 자동으로 Model에 저장된다. 저장될 때 객체명(dto)이 아닌 클래스명(BlogDto)으로 저장된다.(클래스명을 (첫글자를 소문자로)LowerCamelCases로 바꿔서 저장한다.)
    */
+  
   
   // @RequestMapping("/blog/detail.do")
    public String blogDetail3(BlogDto dto) { // Model에 저장된 이름은 dto가 아니라 blogDto 이다.)
