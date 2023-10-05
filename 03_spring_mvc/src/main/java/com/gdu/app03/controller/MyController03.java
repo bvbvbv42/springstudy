@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.app03.dto.BlogDto;
 
+
+@RequestMapping("/blog")  // "/blog"로 시작하는 요청을 처리하는 컨트롤러가 된다.
+                                // 모든 메소드의 요청에 "/blog"가 자동으로 삽입된다.      
 @Controller
 public class MyController03 {
 
@@ -21,7 +24,7 @@ public class MyController03 {
   
     
   // 파라미터 전달 첫번째 방법
-  @RequestMapping("/blog/detail.do")  // GET 방식의 method는 생략할 수 있다. value만 작성할 땐 value= 부분도 생략할 수 있다.
+  // @RequestMapping("/detail.do")  // GET 방식의 method는 생략할 수 있다. value만 작성할 땐 value= 부분도 생략할 수 있다.
   public String blogDetail(HttpServletRequest request, Model model) {
     // ViewResolver의 prefix : /WEB-INF/views/
     // ViewResolver의 suffix : .jsp
@@ -42,7 +45,7 @@ public class MyController03 {
   
   
   //파라미터 전달 두번째 방법
-  //@RequestMapping("/blog/detail.do")
+  //@RequestMapping("/detail.do")
   public String blogDetail2(@RequestParam(value="blogNo", required = false, defaultValue ="1") int blogNo, Model model) {
     model.addAttribute("blogNo", blogNo);
     return "blog/detail";
@@ -60,14 +63,14 @@ public class MyController03 {
    */
   
   
-  // @RequestMapping("/blog/detail.do")
+  // @RequestMapping("/detail.do")
    public String blogDetail3(BlogDto dto) { // Model에 저장된 이름은 dto가 아니라 blogDto 이다.)
      return "blog/detail";
    }
   
    // ModelAttribute를 이용해서 Model에 저장되는 커맨드 객체의 이름을 지정할 수 있다.
    
-   //@RequestMapping("blog/detail.do")
+   @RequestMapping("blog/detail.do")  // 위에는 /blog 다삭제함
    public String blogDetail(@ModelAttribute("dto") BlogDto blogDto)  {   // Model에 저장되는 이름은 dto이다.
   
      return "blog/detail";
