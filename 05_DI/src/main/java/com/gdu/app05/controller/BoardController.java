@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.gdu.app05.service.BoardService;
 import com.gdu.app05.service.BoardServiceImpl;
 
-@Controller
+@Controller // 컨트롤러 전용 @Component
 public class BoardController {
   
   /*
@@ -53,8 +53,25 @@ public class BoardController {
    *  3) Setter 형식의 메소드에 주입하기
    */
   
+    @Autowired
+    private BoardService boardService;
+    
 
-  private BoardService boardService;
+//    @Autowired
+//    public BoardController(BoardService boardService) {
+//    super();
+//    this.boardService = boardService;
+//  }
+//    
+//    
+//    @Autowired
+//    public void setBoardService(BoardService boardService) {
+//      this.boardService = boardService;
+//    }
+
+
+
+
 
 
     @RequestMapping(value="/board/list.do", method=RequestMethod.GET)
