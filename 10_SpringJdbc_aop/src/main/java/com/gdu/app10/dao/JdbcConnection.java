@@ -1,4 +1,4 @@
-package com.gdu.app09.dao;
+package com.gdu.app10.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
