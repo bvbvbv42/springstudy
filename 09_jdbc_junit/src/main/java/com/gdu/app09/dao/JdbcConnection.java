@@ -1,4 +1,4 @@
-package com.gdu.app10.dao;
+package com.gdu.app09.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,11 +15,10 @@ public class JdbcConnection {
    *  Class.forName("oracle.jdbc.OracleDriver");
    *  url = "jdbc:oracle:thin:@localhost:1521:xe"
    * 
-   * 쿼리 출력 버전(log4jdbc 디펜던시) 
-   * Class.forName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
-   * url = "jdbc:log4jdbc:oracle:thin:@localhost:1521:xe"
+   * 쿼리 출력 버전(log4jdbc 디펜던시)
+   *  Class.forName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
+   *  url = "jdbc:log4jdbc:oracle:thin:@localhost:1521:xe"
    */
-  
   
   public Connection getConnection() {
     Connection con = null;
