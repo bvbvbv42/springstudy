@@ -1,4 +1,4 @@
-package com.gdu.app09;
+package com.gdu.myapp;
 
 import static org.junit.Assert.*;
 
