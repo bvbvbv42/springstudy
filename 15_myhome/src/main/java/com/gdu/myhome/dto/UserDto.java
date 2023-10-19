@@ -22,7 +22,7 @@ public class UserDto {
   private String roadAddress;
   private String jibunAddress;
   private String detailAddress;
-  private int    agree;
-  private Date pwModifiedat;
-  private Date joinedAt;
-  }
+  private int agree;
+  private Date pwModifiedAt ;
+  private Date joinedAt ;
+}
