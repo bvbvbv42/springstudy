@@ -7,41 +7,34 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>" />
 
 <jsp:include page="../layout/header.jsp">
-  <jsp:param value="회원가입" name="title"/>
+  <jsp:param value="로그인" name="title"/>
 </jsp:include>
 
-<script src="${contextPath}/resources/js/user_join.js"></script>
-<script>
+<style>
+  .login_form_wrap {
+    width: 300px;
+  }
+</style>
 
-</script>
-
-
-<div>
-
-  <form id="frm_join" method="post" action="${contextPath}/user/join.do">
-    
-    <h1>회원가입</h1>
-    
-    <div>
+  <div class="login_form_wrap center_wrap">
+    <form method="post" action="${contextPath}/user/login.do">
       <div>
-        <label for="email">이메일</label>
-        <input type="text" name="email" id="email">
-        <button type="button" id="btn_get_code">인증코드받기</button>
-        <span id="msg_email"></span>
+        <label for="email">아이디</label>
+        <input type="text" name="email" id="email" placeholder="admin@gmail.com">
       </div>
       <div>
-        <input type="text" id="code" placeholder="인증코드입력">
-        <button type="button" id="btn_verify_code">인증하기</button>
+        <label for="pw">비밀번호</label>
+        <input type="password" name="pw" id="pw" placeholder="●●●●●●">
       </div>
-    </div>
-    
-    <div>
-      <input type="hidden" name="event" value="${event}">
-      <button type="submit">회원가입하기</button>
-    </div>
-    
-  </form>
-
-</div>
+      <div>
+        <input type="hidden" name="referer" value="${referer}">
+        <button type="submit">로그인</button>
+      </div>
+    </form>
+    <ul class="ul_menu center_wrap">
+      <li><a href="${contextPath}">자동로그인</a>
+      <li><a href="${contextPath}">아이디/비밀번호 찾기</a>
+    </ul>
+  </div>
 
 <%@ include file="../layout/footer.jsp" %>
