@@ -23,30 +23,26 @@
     <!-- Random String 생성(이메일 인증코드 생성) -->
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
     <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>3.12.0</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.12.0</version>
     </dependency>
-      
-      <!--  이메일 전송 API -->
-        <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+
+    <!-- 이메일 전송 API (javax.mail + spring-context-support) -->
+    <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
     <dependency>
-        <groupId>javax.mail</groupId>
-        <artifactId>javax.mail-api</artifactId>
-        <version>1.6.2</version>
+      <groupId>javax.mail</groupId>
+      <artifactId>javax.mail-api</artifactId>
+      <version>1.6.2</version>
     </dependency>
-    
-    
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
     <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context-support</artifactId>
-        <version>${org.springframework-version}</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${org.springframework-version}</version>
     </dependency>
-    
-          
-      
-    <!-- 파일 첨부(commons-io + commons-fileupload-->
+
+    <!-- 파일 첨부(commons-io + commons-fileupload) -->
     <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
     <dependency>
       <groupId>commons-io</groupId>
@@ -60,7 +56,7 @@
       <version>1.5</version>
     </dependency>
 
-    <!-- Aspect Oriented Programming(AIO) -->
+    <!-- Aspect Oriented Programming(AOP) -->
     <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
     <dependency>
       <groupId>org.aspectj</groupId>
@@ -103,7 +99,7 @@
       <scope>test</scope>
     </dependency>
   
-    <!--  Java(Object, Map, List) <-> JSON -->
+    <!-- Java(Object, Map, List) <-> JSON -->
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -168,14 +164,14 @@
       <artifactId>spring-webmvc</artifactId>
       <version>${org.springframework-version}</version>
     </dependency>
-        
+    
     <!-- @Inject -->
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
       <version>1</version>
     </dependency>
-        
+    
     <!-- Servlet -->
     <dependency>
       <groupId>javax.servlet</groupId>
