@@ -2,6 +2,7 @@ package com.gdu.myhome.service;
 
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -150,6 +151,139 @@ public class UserServiceImpl implements UserService {
       } else {
         out.println("alert('회원 가입이 실패했습니다.')");
         out.println("history.go(-2)");
+      }
+      out.println("</script>");
+      out.flush();
+      out.close();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+  }
+
+  @Override
+  public ResponseEntity<Map<String, Object>> modify(HttpServletRequest request) {
+    
+    String name = mySecurityUtils.preventXSS(request.getParameter("name"));
+    String gender = request.getParameter("gender");
+    String mobile = request.getParameter("mobile");
+    String postcode = request.getParameter("postcode");
+    String roadAddress = request.getParameter("roadAddress");
+    String jibunAddress = request.getParameter("jibunAddress");
+    String detailAddress = mySecurityUtils.preventXSS(request.getParameter("detailAddress"));
+    String event = request.getParameter("event");
+    int agree = event.equals("on") ? 1 : 0;
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    
+    UserDto user = UserDto.builder()
+        .name(name)
+        .gender(gender)
+        .mobile(mobile)
+        .postcode(postcode)
+        .roadAddress(roadAddress)
+        .jibunAddress(jibunAddress)
+        .detailAddress(detailAddress)
+        .agree(agree)
+        .userNo(userNo)
+        .build();
+    
+    int modifyResult = userMapper.updateUser(user);
+    
+    if(modifyResult == 1) {
+      HttpSession session = request.getSession();
+      UserDto sessionUser = (UserDto)session.getAttribute("user");
+      sessionUser.setName(name);
+      sessionUser.setGender(gender);
+      sessionUser.setMobile(mobile);
+      sessionUser.setPostcode(postcode);
+      sessionUser.setRoadAddress(roadAddress);
+      sessionUser.setJibunAddress(jibunAddress);
+      sessionUser.setDetailAddress(detailAddress);
+      sessionUser.setAgree(agree);
+    }
+    
+    return new ResponseEntity<>(Map.of("modifyResult", modifyResult), HttpStatus.OK);
+    
+  }
+
+  @Override
+  public void modifyPw(HttpServletRequest request, HttpServletResponse response) {
+    
+    String pw = mySecurityUtils.getSHA256(request.getParameter("pw"));
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    
+    UserDto user = UserDto.builder()
+                    .pw(pw)
+                    .userNo(userNo)
+                    .build();
+    
+    int modifyPwResult = userMapper.updateUserPw(user);
+    
+    try {
+      
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      out.println("<script>");
+      if(modifyPwResult == 1) {
+        HttpSession session = request.getSession();
+        UserDto sessionUser = (UserDto)session.getAttribute("user");
+        sessionUser.setPw(pw);
+        out.println("alert('비밀번호가 수정되었습니다.')");
+        out.println("location.href='" + request.getContextPath() + "/user/mypage.form'");
+      } else {
+        out.println("alert('비밀번호가 수정되지 않았습니다.')");
+        out.println("history.back()");
+      }
+      out.println("</script>");
+      out.flush();
+      out.close();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+  }
+  
+  @Override
+  public void leave(HttpServletRequest request, HttpServletResponse response) {
+  
+    Optional<String> opt = Optional.ofNullable(request.getParameter("userNo"));
+    int userNo = Integer.parseInt(opt.orElse("0"));
+    
+    UserDto user = userMapper.getUser(Map.of("userNo", userNo));
+    
+    if(user == null) {
+      try {
+        response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<script>");
+        out.println("alert('회원 탈퇴를 수행할 수 없습니다.')");
+        out.println("location.href='" + request.getContextPath() + "/main.do'");
+        out.println("</script>");
+        out.flush();
+        out.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    
+    int insertLeaveUserResult = userMapper.insertLeaveUser(user);
+    int deleteUserResult = userMapper.deleteUser(user);
+    
+   try {
+      
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      out.println("<script>");
+      if(insertLeaveUserResult == 1 && deleteUserResult == 1) {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        out.println("alert('회원 탈퇴되었습니다. 그 동안 이용해 주셔서 감사합니다.')");
+        out.println("location.href='" + request.getContextPath() + "/main.do'");
+      } else {
+        out.println("alert('회원 탈퇴되지 않았습니다.')");
+        out.println("history.back()");
       }
       out.println("</script>");
       out.flush();
