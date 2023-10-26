@@ -7,7 +7,7 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>" />
 
 <jsp:include page="../layout/header.jsp">
-  <jsp:param value="휴면해제" name="title"/>
+  <jsp:param value="게시글작성" name="title"/>
 </jsp:include>
 
 <div>
@@ -17,16 +17,14 @@
     <h1>자유게시글을 작성하세요</h1>
     
     <div>
-      <div>
-        <label for="email">작성자</label>
-        <input type="text" name="email" id="email" value="${sessionScope.user.email}" readonly>
+      <label for="email">작성자</label>
+      <input type="text" name="email" id="email" value="${sessionScope.user.email}" readonly>
     </div>
-   
+    
     <div>
       <label for="contents">내용</label>
       <textarea name="contents" id="contents"></textarea>
     </div>
-  
     
     <div>
       <button type="submit">작성완료</button>
