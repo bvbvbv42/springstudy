@@ -48,11 +48,25 @@ public class BbsServiceImpl implements BbsService {
     
     //보내고싶은것을 저장하는곳 = model
     model.addAttribute("bbsList",bbsList);
-    
     String contextPath =request.getContextPath();
     model.addAttribute("paging", myPageUtils.getMvcPaging(contextPath + "/bbs/list/do"));  //마이페이지유틸스 sb.append쪽에있음 ,, /bbs/list/do" 여기면 목록을보여주
     model.addAttribute("total", total);
   
+  }
+  
+  
+  @Override
+  public BbsDto getBbs(int bbsNo) {
+    // 추상메소드를 만드는것을 override라고 한다.
+    BbsDto bbs = bbsMapper.getBbs(bbsNo);        //bbsMapper.getBbs(bbsNo); ->mapper에 getBbs를 만들어서 bbsNo 를 전달해줘라
+    // bbs가 결과다
+    return bbs;
+  }
+  
+  @Override
+  public int addBbs(BbsDto bbs) {    //사용자가 입력한게 bbs에 있음
+    return bbsMapper.insertBbs(bbs);
+    
   }
   
 }

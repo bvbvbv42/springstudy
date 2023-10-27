@@ -12,6 +12,7 @@
               FROM BBS_T)
     
      WHERE RN BETWEEN #{begin} AND #{end}          
+    
     <!--  Map에 저장  ,  <> 안에있는것을 generic이라고 한다 -->
     <!-- resultType="BbsDto -> mybatis 밑 config에 별명을 지어놓음 -->  
   </select>
@@ -22,9 +23,32 @@
       FROM BBS_T
   </select>
   
+  <!-- 상세 보기(전달 int bbsNo, BbsDto 반환) -->
+  <select id="getBbs" parameterType="int" resultType="BbsDto">
+      SELECT BBS_NO, EDITOR, TITLE, CONTENTS, CREATED_AT, MODIFIED_AT
+        FROM BBS_T
+       WHERE BBS_NO = #{bbsNo} 
+  </select>
   
-  
-  
+  <!-- 삽입(전달 BbsDto bbs, int 반환(insert문은 int를 반환) , (INSERT는 resultType는 작성안함) << mybatis의 약속 -->
+  <insert id="insertBbs" parameterType="BbsDto">
+    INSERT INTO BBS_T(
+        BBS_NO
+      , EDITOR
+      , TITLE
+      , CONTENTS
+      , CREATED_AT
+      , MODIFIED_AT
+    ) VALUES(
+        BBS_SEQ.NEXTVAL
+      , #{editor}
+      , #{title}
+      , #{contents}
+      , SYSDATE
+      , NULL
+     )
+ 
+  </insert>
   
   
   

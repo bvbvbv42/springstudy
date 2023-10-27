@@ -16,4 +16,6 @@ public interface BbsMapper {
   // bbsmapper.xml이랑 한몸
   
   public int getBbsCount();
+  public BbsDto getBbs(int bbsNo);     //int bbsNo를 선언해서 받아준다.
+  public int insertBbs(BbsDto bbs);   //insertBbs란아이디를 xml에 가서 만들어준다
 }
