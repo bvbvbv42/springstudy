@@ -52,7 +52,7 @@
  		// 클릭한 대상 : 이벤트 대상 (이벤트객체의 target 속성)
  		
  	    let bbsNo = $(ev.target).parent().data('bbs_no');  // 데이터속성에서 카멜케이스 쓰지말것
- 		location.href = '${contextPath}/detail.do?bbsNo=' + bbsNo; 	 
+ 	   location.href = '${contextPath}/detail.do?bbsNo=' + bbsNo; 	 
  	 })
  	 
  	 $('#frm_add').submit((ev) => {

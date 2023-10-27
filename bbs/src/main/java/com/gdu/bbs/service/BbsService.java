@@ -20,4 +20,6 @@ public interface BbsService {
     // 저장할것이 하나면 controller가 받아서 저장한다.
   public BbsDto getBbs(int bbsNo);
   public int addBbs(BbsDto bbs);
+  public int modifyBbs(BbsDto bbs);
+  public int removeBbs(int bbsNo);
 }

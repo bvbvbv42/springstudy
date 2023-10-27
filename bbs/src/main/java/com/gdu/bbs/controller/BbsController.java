@@ -52,6 +52,26 @@ public class BbsController {
     return "redirect:/list.do";             // redirect는 mapping(괄호)안에 있는것을 넣는다
   }
   
+  // 묻지말고 외워라!!!!!
+ 
+ 
+  // update는 redirectAttribute에 저장한 뒤 redirect 한다.   
+  @PostMapping("/modify.do")
+  public String modify(BbsDto bbs, RedirectAttributes attr) { // 3개니까 커맨드객체를 사용하는게 좋지
+    int modifyResult = bbsService.modifyBbs(bbs);
+    attr.addFlashAttribute("modifyResult", modifyResult);
+    return "redirect:/detail.do?bbsNo=" + bbs.getBbsNo();   // detail.do 에 @RequestParam(value="bbsNo
+  }
+  
+  // delete는 redirectAttribute에 저장한 뒤 redirect 한다.
+  @PostMapping("/remove.do")
+  public String remove(@RequestParam(value="bbsNo", required=false, defaultValue="0") int bbsNo    // 하나만 받으면 되니깐 키값으로만
+                     , RedirectAttributes attr) {
+    int removeResult = bbsService.removeBbs(bbsNo);
+    attr.addFlashAttribute("removeResult", removeResult);
+    return "redirect:/list.do";
+  }
+  
   
   
   

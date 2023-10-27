@@ -69,4 +69,14 @@ public class BbsServiceImpl implements BbsService {
     
   }
   
+  @Override
+  public int modifyBbs(BbsDto bbs) {
+    return bbsMapper.updateBbs(bbs);
+  }
+  @Override
+  public int removeBbs(int bbsNo) {
+
+    return bbsMapper.deleteBbs(bbsNo);
+  }
+  
 }
