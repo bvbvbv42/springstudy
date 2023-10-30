@@ -60,9 +60,9 @@
   </update>
   
   <!-- 삭제(전달 int bbsNo, int 반환(DELETE는 resultType 작성안함) )-->
-  <delete id="deleteBbs" parameterType="int"></delete>
+  <delete id="deleteBbs" parameterType="int">
      DELETE
-     FROM BBS_T
+       FROM BBS_T
      WHERE BBS_NO = #{bbsNo}
-  
+  </delete>
 </mapper>
