@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,22 +14,29 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.myhome.dao.BlogMapper;
 import com.gdu.myhome.dto.BlogDto;
 import com.gdu.myhome.dto.BlogImageDto;
+import com.gdu.myhome.dto.CommentDto;
+import com.gdu.myhome.dto.UserDto;
 import com.gdu.myhome.util.MyFileUtils;
+import com.gdu.myhome.util.MyPageUtils;
 
 import lombok.RequiredArgsConstructor;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class BlogServiceImpl implements BlogService {
 
   private final BlogMapper blogMapper;
   private final MyFileUtils myFileUtils;
+  private final MyPageUtils myPageUtils;
   
   @Override
   public Map<String, Object> imageUpload(MultipartHttpServletRequest multipartRequest) {
@@ -69,51 +77,49 @@ public class BlogServiceImpl implements BlogService {
   
   @Override
   public int addBlog(HttpServletRequest request) {
-    
-    // DB에 보낼 데이터 4개
+
     // BLOG_T에 추가할 데이터
-    
     String title = request.getParameter("title");
     String contents = request.getParameter("contents");
     int userNo = Integer.parseInt(request.getParameter("userNo"));
     String ip = request.getRemoteAddr();
     
-    //BlogDto 생성
+    // BlogDto 생성
     BlogDto blog = BlogDto.builder()
                     .title(title)
                     .contents(contents)
-                    .userNo(userNo)
+                    .userDto(UserDto.builder()
+                              .userNo(userNo)
+                              .build())
                     .ip(ip)
                     .build();
     
     // BLOG_T에 추가
-    // BlogMapper의 insertBlog() 메소드를 실행하면 
-    // 메소드로 전달한 blog 객체에 blogNo값이 저장된다.
-    int addResult = blogMapper.insertBlog(blog); 
+    // BlogMapper의 insertBlog() 메소드를 실행하면
+    // insertBlog() 메소드로 전달한 blog 객체에 blogNo값이 저장된다.
+    int addResult = blogMapper.insertBlog(blog);
     
     // BLOG 작성시 사용한 이미지 목록 (Jsoup 라이브러리 사용)
     Document document = Jsoup.parse(contents);
-    Elements elements = document.getElementsByTag("img");
+    Elements elements =  document.getElementsByTag("img");
     
     if(elements != null) {
       for(Element element : elements) {
         String src = element.attr("src");
-        String filesystemName = src.substring(src.lastIndexOf("/") + 1);
-        // /myhome/blog/2023/10/27/aaaaa.jpg
-        // -> aaaaa.jpg 이것만 추출
+        String filesystemName = src.substring(src.lastIndexOf("/") + 1); 
         BlogImageDto blogImage = BlogImageDto.builder()
                                     .blogNo(blog.getBlogNo())
                                     .imagePath(myFileUtils.getBlogImagePath())
                                     .filesystemName(filesystemName)
                                     .build();
-        
         blogMapper.insertBlogImage(blogImage);
       }
- }
-      
-        return addResult;
     }
     
+    return addResult;
+    
+  }
+  
   public void blogImageBatch() {
     
     // 1. 어제 작성된 블로그의 이미지 목록 (DB)
@@ -136,6 +142,57 @@ public class BlogServiceImpl implements BlogService {
         target.delete();
       }
     }
+    
+  }
+  
+  @Transactional(readOnly=true)
+  @Override
+  public void loadBlogList(HttpServletRequest request, Model model) {
+  
+    Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(opt.orElse("1"));
+    int total = blogMapper.getBlogCount();
+    int display = 10;
+    
+    myPageUtils.setPaging(page, total, display);
+    
+    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+                                   , "end", myPageUtils.getEnd());
+    
+    List<BlogDto> blogList = blogMapper.getBlogList(map);
+    
+    model.addAttribute("blogList", blogList);
+    model.addAttribute("paging", myPageUtils.getMvcPaging(request.getContextPath() + "/blog/list.do"));
+    model.addAttribute("beginNo", total - (page - 1) * display);
+    
+  }
+  
+  @Override
+  public int increseHit(int blogNo) {
+    return blogMapper.updateHit(blogNo);
+  }
+  
+  @Override
+  public BlogDto getBlog(int blogNo) {
+    return blogMapper.getBlog(blogNo);
+  }
+
+  @Override
+  public Map<String, Object> addComment(HttpServletRequest request) {
+
+    String contents = request.getParameter("contents");
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    int blogNo = Integer.parseInt(request.getParameter("blogNo"));
+    
+    CommentDto comment = CommentDto.builder()
+                          .contents(contents)
+                          .userNo(userNo)
+                          .blogNo(blogNo)
+                          .build();
+    
+    int addCommentResult = blogMapper.insertComment(comment);
+    
+    return Map.of("addCommentResult", addCommentResult);
     
   }
   

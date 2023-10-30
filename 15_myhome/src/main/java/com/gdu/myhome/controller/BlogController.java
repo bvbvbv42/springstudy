@@ -9,10 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gdu.myhome.dto.BlogDto;
 import com.gdu.myhome.service.BlogService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class BlogController {
   
   @GetMapping("/list.do")
   public String list(HttpServletRequest request, Model model) {
+    blogService.loadBlogList(request, model);
     return "blog/list";
   }
   
@@ -34,12 +37,9 @@ public class BlogController {
     return "blog/write";
   }
   
-  @ResponseBody  //produces 랑 세트!
+  @ResponseBody
   @PostMapping(value="/imageUpload.do", produces="application/json")
-  // 이미지는 postmapping
-  
   public Map<String, Object> imageUpload(MultipartHttpServletRequest multipartRequest) {
-    // ㄴ> 곧바로 서비스로넘김
     return blogService.imageUpload(multipartRequest);
   }
   
@@ -49,6 +49,32 @@ public class BlogController {
     redirectAttributes.addFlashAttribute("addResult", addResult);
     return "redirect:/blog/list.do";
   }
+  
+  @GetMapping("/increseHit.do")
+  public String increseHit(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo) {
+    int increseResult = blogService.increseHit(blogNo);
+    if(increseResult == 1) {
+      return "redirect:/blog/detail.do?blogNo=" + blogNo;
+    } else {
+      return "redirect:/blog/list.do";
+    }
+  }
+  
+  @GetMapping("/detail.do")
+  public String detail(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo
+                     , Model model) {
+    BlogDto blog = blogService.getBlog(blogNo);
+    model.addAttribute("blog", blog);
+    return "blog/detail";
+  }
+    
+  @ResponseBody
+  @PostMapping(value="/addComment.do", produces="application/json")
+  public Map<String, Object> addComment(HttpServletRequest request) {
+    return blogService.addComment(request);
+  }
+  
+  
   
   
   
