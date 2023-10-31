@@ -67,6 +67,30 @@ public class BlogController {
     model.addAttribute("blog", blog);
     return "blog/detail";
   }
+  
+  @PostMapping("/edit.form")
+  public String edit(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo
+                    , Model model) {
+    BlogDto blog = blogService.getBlog(blogNo);
+    model.addAttribute("blog", blog);
+    return "blog/edit";
+  }
+  
+  @PostMapping("/modifyBlog.do")
+  public String modifyBlog(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    int modifyResult = blogService.modifyBlog(request);
+    redirectAttributes.addFlashAttribute("modifyResult", modifyResult);
+    return "redirect:/blog/detail.do?blogNo=" + request.getParameter("blogNo");
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
     
   @ResponseBody
   @PostMapping(value="/addComment.do", produces="application/json")
@@ -74,9 +98,10 @@ public class BlogController {
     return blogService.addComment(request);
   }
   
-  
-  
-  
-  
+  @ResponseBody
+  @GetMapping(value="/commentList.do", produces="application/json")
+  public Map<String, Object> commentList(HttpServletRequest request){
+    return blogService.loadCommentList(request);
+  }
   
 }
