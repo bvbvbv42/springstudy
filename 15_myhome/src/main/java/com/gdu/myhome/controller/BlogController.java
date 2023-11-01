@@ -70,7 +70,7 @@ public class BlogController {
   
   @PostMapping("/edit.form")
   public String edit(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo
-                    , Model model) {
+                   , Model model) {
     BlogDto blog = blogService.getBlog(blogNo);
     model.addAttribute("blog", blog);
     return "blog/edit";
@@ -81,17 +81,16 @@ public class BlogController {
     int modifyResult = blogService.modifyBlog(request);
     redirectAttributes.addFlashAttribute("modifyResult", modifyResult);
     return "redirect:/blog/detail.do?blogNo=" + request.getParameter("blogNo");
-    
   }
   
+  @PostMapping("/remove.do")
+  public String remove(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo
+                     , RedirectAttributes redirectAttributes) {
+    int removeResult = blogService.removeBlog(blogNo);
+    redirectAttributes.addFlashAttribute("removeResult", removeResult);
+    return "redirect:/blog/list.do";
+  }
   
-  
-  
-  
-  
-  
-  
-    
   @ResponseBody
   @PostMapping(value="/addComment.do", produces="application/json")
   public Map<String, Object> addComment(HttpServletRequest request) {
@@ -104,4 +103,18 @@ public class BlogController {
     return blogService.loadCommentList(request);
   }
   
+  @ResponseBody
+  @PostMapping(value="/addCommentReply.do", produces="application/json")
+  public Map<String, Object> addCommentReply(HttpServletRequest request) {
+    return blogService.addCommentReply(request);
+  }
+  
+  @ResponseBody
+  @PostMapping(value="/removeComment.do", produces="application/json")
+  public Map<String, Object> removeComment(@RequestParam(value="commentNo", required = false, defaultValue = "0") int commentNo){
+    return blogService.removeComment(commentNo);
+    
+  }
+
+
 }
