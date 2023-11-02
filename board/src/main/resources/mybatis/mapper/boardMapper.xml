@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.goodee.app.dao.BoardMapper">
+
+  <!--  목록(begin/end 전달, List<BbsDto> 반환) -->
+  <select id="getBoardList" resultType="BoardDto">
+    SELECT BOARD_NO, WRITER, TITLE, CONTENTS, CREATED_AT, MODIFIED_AT
+      FROM  BOARD_T
+      
+  </select>
+  
+  
+  <!-- 삽입(전달 BbsDto bbs, int 반환(insert문은 int를 반환) , (INSERT는 resultType는 작성안함) << mybatis의 약속 -->
+  <insert id="insertBoard" parameterType="BoardDto">
+    INSERT INTO BBS_T(
+        BOARD_NO
+      , WRITER
+      , TITLE
+      , CONTENTS
+      , CREATED_AT
+      , MODIFIED_AT
+    ) VALUES(
+        BOARD_SEQ.NEXTVAL
+      , #{writer}
+      , #{title}
+      , #{contents}
+      , TIMESTAMP
+      , NULL
+     )
+    
+  </insert>
+  
+  
+</mapper>
