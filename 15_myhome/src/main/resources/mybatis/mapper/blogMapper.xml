@@ -129,14 +129,20 @@
      WHERE U.USER_NO = B.USER_NO
        AND B.BLOG_NO = #{blogNo}
   </select>
-  
-  <update id= "updateBlog" parameterType="BlogDto">
+
+  <update id="updateBlog" parameterType="BlogDto">
     UPDATE BLOG_T
        SET TITLE = #{title}
          , CONTENTS = #{contents}
          , MODIFIED_AT = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH:MI:SS')
-     WHERE BLOG_NO = #{blogNo}    
+     WHERE BLOG_NO = #{blogNo}
   </update>
+  
+  <delete id="deleteBlog" parameterType="int">
+    DELETE
+      FROM BLOG_T
+     WHERE BLOG_NO = #{blogNo}
+  </delete>
   
   <insert id="insertComment" parameterType="CommentDto">
     INSERT INTO COMMENT_T (
@@ -174,9 +180,9 @@
              WHERE C.BLOG_NO = #{blogNo}) A
      WHERE A.RN BETWEEN #{begin} AND #{end}
   </select>
-  
+
   <insert id="insertCommentReply" parameterType="CommentDto">
-   INSERT INTO COMMENT_T (
+    INSERT INTO COMMENT_T (
         COMMENT_NO
       , CONTENTS
       , USER_NO
@@ -196,7 +202,7 @@
       , #{groupNo}
     )
   </insert>
-  
+
   <update id="deleteComment" parameterType="int">
     UPDATE COMMENT_T
        SET STATUS = 0

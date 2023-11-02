@@ -84,9 +84,9 @@
   <div id="paging"></div>
   
   <script>
-  
-    const fnRequiredLogin = () => {     
-    	$('#btn_comment_add').click(() => {	
+    
+    const fnContentsClick = () => {
+      $('#contents').click(() => {
         if('${sessionScope.user}' === ''){
           if(confirm('로그인이 필요한 기능입니다. 로그인할까요?')){
             location.href = '${contextPath}/user/login.form';
@@ -94,18 +94,18 @@
             return;
           }
         }
-    
-    
+      })
+    }
+  
     const fnCommentAdd = () => {
       $('#btn_comment_add').click(() => {
-    	  if('${sessionScope.user}' === ''){
-              if(confirm('로그인이 필요한 기능입니다. 로그인할까요?')){
-                location.href = '${contextPath}/user/login.form';
-              } else {
-                return;
-              }
-            }
-      
+        if('${sessionScope.user}' === ''){
+          if(confirm('로그인이 필요한 기능입니다. 로그인할까요?')){
+            location.href = '${contextPath}/user/login.form';
+          } else {
+            return;
+          }
+        }
         $.ajax({
           // 요청
           type: 'post',
@@ -170,7 +170,7 @@
               str += '    </form>';
               str += '  </div>';
               /******************************************************************/
-              if('${sessionScope.user.userNo}' == c.userDto.userNo){            	  
+              if('${sessionScope.user.userNo}' == c.userDto.userNo){                
                 str += '  <div>';
                 str += '    <input type="hidden" value="' + c.commentNo + '">';
                 str += '    <i class="fa-regular fa-circle-xmark ico_remove_comment"></i>';
@@ -191,36 +191,33 @@
     }
     
     const fnBlind = () => {
-    	$(document).on('click', '.btn_open_reply', (ev) => {
-    		if('${sessionScope.user}' === ''){
-                if(confirm('로그인이 필요한 기능입니다. 로그인할까요?')){
-                  location.href = '${contextPath}/user/login.form';
-                } else {
-                  return;
-                }
-              }
-        
-    	}
+      $(document).on('click', '.btn_open_reply', (ev) => {
+        if('${sessionScope.user}' === ''){
+          if(confirm('로그인이 필요한 기능입니다. 로그인할까요?')){
+            location.href = '${contextPath}/user/login.form';
+          } else {
+            return;
+          }
+        }
         var blindTarget = $(ev.target).parent().next();
         if(blindTarget.hasClass('blind')){
-        	$('.frm_add_reply_wrap').addClass('blind');  // 모든 답글 입력화면 닫기
-        	blindTarget.removeClass('blind');            // 답글 입력화면 열기
+          $('.frm_add_reply_wrap').addClass('blind');  // 모든 답글 입력화면 닫기
+          blindTarget.removeClass('blind');            // 답글 입력화면 열기
         } else {
-        	blindTarget.addClass('blind');
+          blindTarget.addClass('blind');
         }
-    	})
+      })
     }
     
     const fnCommentReplyAdd = () => {
       $(document).on('click', '.btn_add_reply', (ev) => {
-    	  if('${sessionScope.user}' === ''){
-              if(confirm('로그인이 필요한 기능입니다. 로그인할까요?')){
-                location.href = '${contextPath}/user/login.form';
-              } else {
-                return;
-              }
-            }
-      
+        if('${sessionScope.user}' === ''){
+          if(confirm('로그인이 필요한 기능입니다. 로그인할까요?')){
+            location.href = '${contextPath}/user/login.form';
+          } else {
+            return;
+          }
+        }
         var frmAddReply = $(ev.target).closest('.frm_add_reply');
         $.ajax({
           // 요청
@@ -266,6 +263,7 @@
       })
     }
     
+    fnContentsClick();
     fnCommentAdd();
     fnCommentList();
     fnBlind();
@@ -292,9 +290,11 @@
           <button type="button" class="btn_add_reply">답글작성완료</button>
         </form>
       </div>
+      
+      // 댓글 작성자만 삭제
       <div>
         <input type="hidden" value="commentNo값">
-        <button type="button" class="btn_remove_comment">삭제</button>
+        <i class="fa-regular fa-circle-xmark ico_remove_comment"></i>
       </div>
       
     </div>
