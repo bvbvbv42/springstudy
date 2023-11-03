@@ -32,7 +32,7 @@
       <input type="file" name="files" id="files" class="form-control" multiple>
     </div>
     <div class="d-grid gap-2 col-6 mx-auto">
-      <input type="text" name="userNo" value="${sessionScope.user.userNo}">
+      <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
       <button type="submit" class="btn btn-primary" style="margin: 32px;">작성완료</button>
     </div>
   </form>
