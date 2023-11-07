@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.goodee.app.dao.BoardMapper">
+
+  <select id="getBoardList" resultType="BoardDto">
+    SELECT BOARD_NO, WRITER, TITLE, CONTENTS, CREATED_AT, MODIFIED_AT
+      FROM BOARD_T
+     ORDER BY BOARD_NO DESC
+  </select>
+  
+  <insert id="insertBoard" parameterType="BoardDto">
+    INSERT INTO BOARD_T
+      (BOARD_NO, WRITER, TITLE, CONTENTS, CREATED_AT, MODIFIED_AT)
+    VALUES
+      (BOARD_SEQ.NEXTVAL, #{writer}, #{title}, #{contents}, SYSTIMESTAMP, SYSTIMESTAMP)
+  </insert>
+  
+  <select id="getBoardByNo" parameterType="int" resultType="BoardDto">
+    SELECT BOARD_NO, WRITER, TITLE, CONTENTS, CREATED_AT, MODIFIED_AT
+      FROM BOARD_T
+     WHERE BOARD_NO = #{boardNo}
+  </select>
+  
+  <update id="updateBoard" parameterType="BoardDto">
+    UPDATE BOARD_T
+       SET TITLE = #{title}
+         , CONTENTS = #{contents}
+         , MODIFIED_AT = SYSTIMESTAMP
+     WHERE BOARD_NO = #{boardNo}
+  </update>
+  
+  <delete id="deleteBoard" parameterType="int">
+    DELETE
+      FROM BOARD_T
+     WHERE BOARD_NO = #{boardNo}
+  </delete>
+  
+  <delete id="deleteBoardList">
+    DELETE
+      FROM BOARD_T
+    <where> 
+       <foreach collection="list" item="boardNo" open="BOARD_NO IN(" separator="," close=")">
+        #{boardNo}
+      </foreach>
+    </where>
+  </delete>
+
+</mapper>
