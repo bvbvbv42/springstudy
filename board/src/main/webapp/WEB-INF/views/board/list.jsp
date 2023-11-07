@@ -24,6 +24,47 @@
   
    <c:forEach items="${boardList}" var="board"> 
     <div>${board.title} - ${board.createdAt}</div>  
+    <div class="board">   <!--bbs 위에이름 똑같이 해야함  // 데이터속성에서 카멜케이스 쓰지말것 -->
+      <div>${board.title}</div>  <!-- gettitle메소드가 실행될꺼임 -->
+    </div>
   </c:forEach>
+  
+  <script>
+ /* 
+ $('.bbs').click(function(){
+    // 클릭한 대상 : 이벤트 대상 (this)
+    let bbsNo = $(this).data('bbs_no');  // 데이터속성에서 카멜케이스 쓰지말것
+    alert(bbsNo);
+  })
+  */
+   
+  $('.board').click((ev) => {
+    // 클릭한 대상 : 이벤트 대상 (이벤트객체의 target 속성)
+    
+      let boardNo = $(ev.target).parent().data('board_no');  // 데이터속성에서 카멜케이스 쓰지말것
+     location.href = '${contextPath}/list.do?boardNo=' + boardNo;    
+   })
+   
+   $('#frm_add').submit((ev) => {
+       let title = $('#title');
+     if(title.val() === ''){      //값이 없으면
+      alert('제목은 필수입니다.');
+        title.focus();
+        ev.preventDefault();
+        return;
+    }
+   })
+   
+   const addResult = '${addResult}';          //addResult가질수있는값은 '', '0', '1'
+   if(addResult !== ''){
+     if(addResult === '1'){
+       alert('추가 성공');
+     } else{
+       alert('추가 실패');
+     }
+   }
+   
+   
+ </script>
 </body>
 </html>
